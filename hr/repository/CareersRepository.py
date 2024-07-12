@@ -5,11 +5,11 @@ from django.forms.models import model_to_dict
 from rest_framework.response import Response
 from rest_framework import status
 
-from datetime import datetime
+from django.utils import timezone
 
 
 meta_data = 'careers'
-now = datetime.now() #.strftime("%d-%m-%Y %H:%M:%S")
+now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
 
 def define(data):
     model = Careers()
@@ -26,7 +26,7 @@ def define(data):
     model.descriptions = data['descriptions']
     model.qualifications = '0' #data['qualifications']
     
-    now = datetime.now() #.strftime("%d-%m-%Y %H:%M:%S")
+    now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
     model.created_at = now
     model.updated_at = now
 

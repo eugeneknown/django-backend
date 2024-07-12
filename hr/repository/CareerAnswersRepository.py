@@ -9,7 +9,7 @@ from django.forms.models import model_to_dict
 from rest_framework.response import Response
 from rest_framework import status
 
-from datetime import datetime
+from django.utils import timezone
 
 
 meta_data = 'career_answers'
@@ -37,7 +37,7 @@ def define(data):
         model.question = CareerQuestions.objects.get(id=int(item['question_id']))
         model.value = item['value']
         
-        now = datetime.now() #.strftime("%d-%m-%Y %H:%M:%S")
+        now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
         model.created_at = now
         model.updated_at = now
 

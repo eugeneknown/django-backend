@@ -1,9 +1,11 @@
 # range
-# {
-#     'target': 'created_at',
-#     'operator': 'range',
-#     'value': ['2024-03-05', '2024-03-08 23:59:59'],
-# }
+# [
+#     {
+#         'target': 'created_at',
+#         'operator': 'range',
+#         'value': ['2024-03-05', '2024-03-08 23:59:59'],
+#     },
+# ]
 
 
 def genericModelFilter(data):

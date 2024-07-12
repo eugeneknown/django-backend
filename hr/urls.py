@@ -57,4 +57,12 @@ urlpatterns = [
 
     #endregion CareerAnswers
 
+    #region TimeLogs
+
+    path('timesheet/logs/define', views.TimeLogsDefine.as_view(), name='define'),
+    path('timesheet/logs/all', views.TimeLogsAll.as_view(), name='all'),
+    path('timesheet/logs/fetch', views.TimeLogsFetch.as_view(), name='fetch'),
+
+    #endregion TimeLogs
+
 ]

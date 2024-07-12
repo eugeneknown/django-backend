@@ -9,7 +9,7 @@ from rest_framework import status
 from django.forms.models import model_to_dict
 from django.db.models import Q
 
-from datetime import datetime
+from django.utils import timezone
 
 
 meta_data = 'entity_files'
@@ -23,7 +23,7 @@ def define(data):
         model.entity = Entities.objects.get(id=data['entity_id'])
         model.files = Files.objects.get(id=data['files_id'])
 
-    now = datetime.now() #.strftime("%d-%m-%Y %H:%M:%S")
+    now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
     model.created_at = now
     model.updated_at = now
 

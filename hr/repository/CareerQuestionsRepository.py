@@ -5,11 +5,11 @@ from rest_framework import status
 
 from django.forms.models import model_to_dict
 
-from datetime import datetime
+from django.utils import timezone
 
 
 meta_data = 'career_questions'
-now = datetime.now() #.strftime("%d-%m-%Y %H:%M:%S")
+now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
 
 
 def define(data):
@@ -22,7 +22,7 @@ def define(data):
     model.value = data['value'] if 'value' in data else ''
     model.type = data['type']
     
-    now = datetime.now() #.strftime("%d-%m-%Y %H:%M:%S")
+    now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
     model.created_at = now
     model.updated_at = now
 

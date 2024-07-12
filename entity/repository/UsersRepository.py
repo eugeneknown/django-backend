@@ -11,7 +11,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from datetime import datetime
+from django.utils import timezone
 
 
 class UsersSerializer(serializers.ModelSerializer):
@@ -123,7 +123,7 @@ def define(data):
     model.username = data['username']
     model.password = data['password']
 
-    now = datetime.now() #.strftime("%d-%m-%Y %H:%M:%S")
+    now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
     model.created_at = now
     model.updated_at = now
 

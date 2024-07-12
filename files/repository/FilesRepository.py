@@ -8,7 +8,7 @@ from rest_framework import status
 from django.forms.models import model_to_dict
 from django.db.models import Q
 
-from datetime import datetime
+from django.utils import timezone
 from hashlib import md5
 from time import time
 
@@ -60,7 +60,7 @@ def define(data):
     model.file_type = data['file_type']
     model.file_size = data['file_size']
 
-    now = datetime.now() #.strftime("%d-%m-%Y %H:%M:%S")
+    now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
     model.created_at = now
     model.updated_at = now
 

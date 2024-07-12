@@ -9,7 +9,7 @@ from django.db.models.functions import Trunc, Coalesce
 from rest_framework.response import Response
 from rest_framework import status
 
-from datetime import datetime
+from django.utils import timezone
 
 
 meta_data = 'entity_career'
@@ -29,7 +29,7 @@ def define(data):
         else:
             model.tags = CareerTags.objects.get(id=int(data['tags_id']))
     
-    now = datetime.now() #.strftime("%d-%m-%Y %H:%M:%S")
+    now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
     model.created_at = now
     model.updated_at = now
 

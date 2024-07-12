@@ -12,11 +12,18 @@ from hr.repository import CareerQuestionsRepository
 from hr.repository import CareerAnswersRepository
 from hr.repository import CareerHasQuestionsRepository
 from hr.repository import CareerTagsRepository
+from hr.repository import ScheduleRepository
+from hr.repository import ScheduleDetailsRepository
+from hr.repository import TimeSheetRepository
+from hr.repository import TimeSheetDetailsRepository
+from hr.repository import TimeLogsRepository
 
 from entity.repository import EntityRepository
 
 from files.repository import FilesRepository
 from files.repository import EntityHasFilesRepository
+
+from django.utils import timezone
 
 # region Career
 
@@ -319,3 +326,77 @@ class CareerAnswersFetch(APIView):
         return result
 
 #endregion CareerAnswers
+
+#region TimeLogs
+    
+class TimeLogsDefine(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def post(self, request):
+        data = request.data
+        schedule = ScheduleRepository.all(data={
+            'filter': [
+                {
+                    'target': 'entity_id',
+                    'operator': '=',
+                    'value': data['entity_id'],
+                }
+            ],
+            'relations': ['schedule_details'],
+        }).data['schedule'][0]
+
+        if not schedule:
+            return Response('Schedule not found', status=status.HTTP_404_NOT_FOUND)
+        
+        if not schedule['schedule_details_data']:
+            return Response('Schedule Details not found', status=status.HTTP_404_NOT_FOUND)
+
+        details = schedule['schedule_details_data']
+        log_in = dict()
+        log_out = dict()
+
+        for item in details:
+            
+
+        return Response(details)
+
+
+        timelogs = TimeLogsRepository.all(data={
+            'filter': [
+                {
+                    'target': 'entity_id',
+                    'operator': '=',
+                    'value': data['entity_id'],
+                },
+                {
+                    'target': ''
+                },
+            ]
+        }).data['time_logs']
+
+        return Response(timelogs)
+        result = TimeLogsRepository.define(data=data)
+
+        return result
+    
+
+class TimeLogsAll(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def post(self, request):
+        data = request.data
+        result = TimeLogsRepository.all(data=data)
+
+        return result
+    
+
+class TimeLogsFetch(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def post(self, request):
+        data = request.data
+        if 'id' not in data:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        result = TimeLogsRepository.fetch(data=data, id=data['id'])
+        
+        return result
+
+#endregion TimeLogs

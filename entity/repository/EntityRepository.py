@@ -1,6 +1,6 @@
 from entity.models import Entities 
 
-from datetime import datetime
+from django.utils import timezone
 
 from django.forms.models import model_to_dict
 
@@ -36,7 +36,7 @@ def define(data):
     model.age = data['age']
     model.gender = data['gender']
 
-    now = datetime.now() #.strftime("%d-%m-%Y %H:%M:%S")
+    now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
     model.created_at = now
     model.updated_at = now
 

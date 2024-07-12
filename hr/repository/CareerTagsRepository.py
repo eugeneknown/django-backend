@@ -7,11 +7,11 @@ from rest_framework import status
 from django.forms.models import model_to_dict
 from django.db.models import Q, Count
 
-from datetime import datetime
+from django.utils import timezone
 
 
 meta_data = 'career_tags'
-now = datetime.now() #.strftime("%d-%m-%Y %H:%M:%S")
+now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
 
 
 def define(data):
@@ -23,7 +23,7 @@ def define(data):
     model.title = data['title']
     model.color = data['color']
     
-    now = datetime.now() #.strftime("%d-%m-%Y %H:%M:%S")
+    now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
     model.created_at = now
     model.updated_at = now
 
