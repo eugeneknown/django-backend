@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 # range
 # [
 #     {
@@ -7,62 +9,74 @@
 #     },
 # ]
 
+# return bool if request status code is 404
+def status_error(request):
+    return True if request.status_code == 404 else False
+
+# format datetime from model 
+# documentaion https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior
+def formatDateTime(date, format='%Y-%m-%d %H:%M:%S'):
+    return date.strftime(format)
+
+
+def dateTimeNow():
+    return timezone.now()
+
 
 def genericModelFilter(data):
     filter = {
-        'filter': [{
+        'filter': {
             'id__gte': '0',
-        }],
-        'exclude': [{
+        },
+        'exclude': {
             'deleted_at__isnull': False,
-        }],
+        },
     }
 
     if data is not {}:
-        for item in data:
-            array = []
-            for _item in data[item]:
-                if item != 'filter' and 'exclude': break
-                temp = dict()
+        for item in data: #array in data
+            if item != 'filter' and item != 'exclude': break
+            temp = dict()
+            for _item in data[item]: # dict in array in data
 
                 if _item['operator'] == 'range':
-                    temp[_item['target']+'__range'] = _item['value']
+                    temp.update({_item['target']+'__range': _item['value']})
 
                 if _item['operator'] == 'year':
-                    temp[_item['target']+'__year'] = _item['value']
+                    temp.update({_item['target']+'__year': _item['value']})
 
                 if _item['operator'] == 'month':
-                    temp[_item['target']+'__month'] = _item['value']
+                    temp.update({_item['target']+'__month': _item['value']})
 
                 if _item['operator'] == 'week':
-                    temp[_item['target']+'__week'] = _item['value']
+                    temp.update({_item['target']+'__week': _item['value']})
 
                 if _item['operator'] == 'day':
-                    temp[_item['target']+'__day'] = _item['value']
+                    temp.update({_item['target']+'__day': _item['value']})
 
 
                 if _item['operator'] == '=':
-                    temp[_item['target']+'__exact'] = _item['value']
+                    temp.update({_item['target']+'__exact': _item['value']})
+
+                if _item['operator'] == '<>':
+                    temp.update({_item['target']+'__isnull': _item['value']})
 
                 if _item['operator'] == '>':
-                    temp[_item['target']+'__gt'] = _item['value']
+                    temp.update({_item['target']+'__gt': _item['value']})
 
                 if _item['operator'] == '<':
-                    temp[_item['target']+'__lt'] = _item['value']
+                    temp.update({_item['target']+'__lt': _item['value']})
 
                 if _item['operator'] == '>=':
-                    temp[_item['target']+'__gte'] = _item['value']
+                    temp.update({_item['target']+'__gte': _item['value']})
 
                 if _item['operator'] == '<=':
-                    temp[_item['target']+'__lte'] = _item['value']
+                    temp.update({_item['target']+'__lte': _item['value']})
 
+            filter[item] = temp
 
-                if item == 'exclude': temp['deleted_at__isnull'] = False
-
-                array.append(temp)
-
-
-            filter[item] = array
+        if 'exclude' in data:
+            filter['exclude'].update({ 'deleted_at__isnull': False })
 
     return(filter)
 

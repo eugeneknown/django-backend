@@ -50,7 +50,7 @@ def all(data):
 
     filter = genericModelFilter(data)
     # print(filter)
-    object = TimeSheets.objects.filter(**filter['filter'][0]).exclude(Q(**filter['exclude'][0], _connector=Q.OR))
+    object = TimeSheets.objects.filter(**filter['filter']).exclude(Q(**filter['exclude'], _connector=Q.OR))
     # print(object.query)
     range = 0
     for item in object:

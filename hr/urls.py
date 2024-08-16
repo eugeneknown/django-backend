@@ -30,6 +30,15 @@ urlpatterns = [
 
     #endregion CareerTags
 
+    #region CareerPlatforms
+
+    path('careers/platform/define', views.CareerPlatformsDefine.as_view(), name='define'),
+    path('careers/platform/all', views.CareerPlatformsAll.as_view(), name='all'),
+    path('careers/platform/fetch', views.CareerPlatformsFetch.as_view(), name='fetch'),
+    path('careers/platform/delete', views.CareerPlatformsDelete.as_view(), name='delete'),
+
+    #endregion CareerPlatforms
+
     #region CareerQuestions
 
     path('careers/questions/define', views.CareerQuestionsDefine.as_view(), name='define'),

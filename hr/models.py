@@ -36,11 +36,22 @@ class CareerTags(models.Model):
     deleted_at = models.DateTimeField(null=True)
 
 
+class CareerPlatforms(models.Model):
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=50)
+    color = models.CharField(max_length=50, default="white")
+    status = models.CharField(max_length=50, default="active")
+    created_at = models.DateTimeField(null=True)
+    updated_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(null=True)
+
+
 class EntityHasCareer(models.Model):
     id = models.AutoField(primary_key=True)
     entity = models.ForeignKey(Entities, on_delete=models.CASCADE)
     careers = models.ForeignKey(Careers, on_delete=models.CASCADE)
     tags = models.ForeignKey(CareerTags, on_delete=models.CASCADE, null=True)
+    platforms = models.ForeignKey(CareerPlatforms, on_delete=models.CASCADE, null=True)
     status = models.CharField(max_length=50, default="active")
     created_at = models.DateTimeField(null=True)
     updated_at = models.DateTimeField(null=True)

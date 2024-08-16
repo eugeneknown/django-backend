@@ -30,21 +30,30 @@ def define(data):
     # model.log_status = data['log_status']
     # model.timezone = data['timezone']
     # model.remarks = data['remarks']
-
+    for item in data:
+        setattr(model, item, data[item])
+        
+    # print(model_to_dict(model))
     now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
     model.created_at = now
     model.updated_at = now
 
-    # model.save()
+    model.save()
 
     return Response({meta_data: model_to_dict(model)}, status=status.HTTP_200_OK)
+
+
+# define({
+#     'id': 1,
+#     'duration': 100
+# })
 
 
 def all(data):
     result = dict()
 
     filter = genericModelFilter(data)
-    object = TimeLogs.objects.filter(**filter['filter'][0]).exclude(Q(**filter['exclude'][0], _connector=Q.OR))
+    object = TimeLogs.objects.filter(**filter['filter']).exclude(Q(**filter['exclude'], _connector=Q.OR))
     range = 0
     for item in object:
         value =  model_to_dict(item)
@@ -54,6 +63,27 @@ def all(data):
 
     return Response({meta_data: result}, status=status.HTTP_200_OK)
 
+# all({
+#     'filter': [
+#         {
+#             'target': 'entity_id',
+#             'operator': '=',
+#             'value': 1,
+#         },
+#         {
+#             'target': 'log_end',
+#             'operator': '<>',
+#             'value': True
+#         },
+#     ],
+#     'exclude': [
+#         {
+#             'target': 'log_start',
+#             'operator': '=',
+#             'value': None,
+#         }
+#     ],
+# })
 
 def fetch(data, id):
     result = TimeLogs.objects.filter(id=id).values()
@@ -63,3 +93,28 @@ def fetch(data, id):
 
 def delete(id):
     print()
+
+
+def lastLogCheck(id):
+    result = dict()
+
+    end_log = TimeLogs.objects.filter(
+        entity=id,
+        log_start__isnull=False,
+        log_end__isnull=True,
+    ).last()
+
+    if not end_log:
+        return Response({meta_data: 'no end log'}, status=status.HTTP_404_NOT_FOUND)
+
+    last_log = TimeLogs.objects.filter(entity=id).last()
+
+    if not last_log:
+        return Response({meta_data: 'no last log'}, status=status.HTTP_404_NOT_FOUND)
+        
+    if end_log.pk is not last_log.pk:
+        return Response({meta_data: result}, status=status.HTTP_404_NOT_FOUND)
+
+    result = TimeLogs.objects.filter(id=end_log.pk).values().last()
+
+    return Response({meta_data: result}, status=status.HTTP_200_OK)

@@ -1,5 +1,5 @@
 from backend.globalFunctions import *
-from hr.models import CareerTags
+from hr.models import CareerPlatforms
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,15 +10,15 @@ from django.db.models import Q, Count
 from django.utils import timezone
 
 
-meta_data = 'career_tags'
+meta_data = 'career_platforms'
 now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
 
 
 def define(data):
-    model = CareerTags()
+    model = CareerPlatforms()
 
     if 'id' in data:
-        model = CareerTags.objects.get('data')
+        model = CareerPlatforms.objects.get('data')
 
     model.title = data['title']
     model.color = data['color']
@@ -34,19 +34,19 @@ def define(data):
 
 def all(data):
     filter = genericModelFilter(data)
-    result = CareerTags.objects.filter(**filter['filter']).exclude(Q(**filter['exclude'], _connector=Q.OR)).values()
+    result = CareerPlatforms.objects.filter(**filter['filter']).exclude(Q(**filter['exclude'], _connector=Q.OR)).values()
 
     return Response({meta_data: result}, status=status.HTTP_200_OK)
 
 
 def fetch(data, id):
-    result = CareerTags.objects.filter(id=id).values()
+    result = CareerPlatforms.objects.filter(id=id).values()
 
     return Response({meta_data: result}, status=status.HTTP_200_OK)
 
 
 def delete(id):
-    model = CareerTags.objects.get(id=id)
+    model = CareerPlatforms.objects.get(id=id)
 
     model.deleted_at = now
 

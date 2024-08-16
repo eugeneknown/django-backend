@@ -1,6 +1,9 @@
+from backend.globalFunctions import *
 from hr.models import Careers
 
 from django.forms.models import model_to_dict
+from django.db.models import Q, Count, Case, Value, When, IntegerField, F
+from django.db.models.functions import Trunc, Coalesce
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -38,8 +41,12 @@ def define(data):
 def all(data):
     result = dict()
 
+    filter = genericModelFilter(data)
+
+    object = Careers.objects.filter(**filter['filter']).exclude(Q(**filter['exclude'], _connector=Q.OR))
+    if 'order' in data: object = object.order_by('-'+data['order']['target'] if data['order']['value'] == 'desc' else data['order']['target'])
+
     if 'relations' in data:
-        object = Careers.objects.filter().exclude(deleted_at__isnull=False).all()
         range = 0
         for item in object:
             # value = dict()
@@ -60,7 +67,7 @@ def all(data):
                 range+=1
 
     else:
-        result = Careers.objects.values()
+        result = object.values()
     
 
     # print(result)

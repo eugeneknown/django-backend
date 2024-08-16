@@ -51,7 +51,7 @@ def all(data):
     result = dict()
 
     filter = genericModelFilter(data)
-    object = ScheduleDetails.objects.filter(**filter['filter'][0]).exclude(Q(**filter['exclude'][0], _connector=Q.OR))
+    object = ScheduleDetails.objects.filter(**filter['filter']).exclude(Q(**filter['exclude'], _connector=Q.OR))
    
     range = 0
     for item in object:

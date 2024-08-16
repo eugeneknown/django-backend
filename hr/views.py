@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from backend.globalFunctions import *
+
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -12,6 +14,7 @@ from hr.repository import CareerQuestionsRepository
 from hr.repository import CareerAnswersRepository
 from hr.repository import CareerHasQuestionsRepository
 from hr.repository import CareerTagsRepository
+from hr.repository import CareerPlatformsRepository
 from hr.repository import ScheduleRepository
 from hr.repository import ScheduleDetailsRepository
 from hr.repository import TimeSheetRepository
@@ -24,6 +27,10 @@ from files.repository import FilesRepository
 from files.repository import EntityHasFilesRepository
 
 from django.utils import timezone
+
+from datetime import datetime
+
+from random import randint
 
 # region Career
 
@@ -147,6 +154,33 @@ class EntitySubmission(APIView):
         return Response({'entity_career': result}, status=status.HTTP_200_OK)
 
 
+    class EntityAddRandomBullshit(APIView):
+        permission_classes = (permissions.AllowAny,)
+    def post(self, request):
+        data = request.data
+
+        result = dict()
+
+        career_range = 16
+        entity_range = 24
+        platforms_range = 3
+
+        add = 10
+
+        range = ['2024-08-04 00:00:00', '2024-08-10 23:59:59']
+
+        #todo add created_at random range
+        for i in range(add):
+            result[i] = EntityHasCareerRepository.define(data={
+                'careers_id': randint(0, career_range),
+                'entity_id': randint(0, entity_range),
+                'platforms_id': randint(0, platforms_range),
+            }).data
+
+
+        return Response({'entity_career': result}, status=status.HTTP_200_OK)
+
+
 #endregion EntityHasCareer
 
 #region CareerTags
@@ -193,6 +227,51 @@ class CareerTagsDelete(APIView):
         return result
 
 #endregion CareerTags
+
+#region CareerPlatforms
+    
+class CareerPlatformsDefine(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def post(self, request):
+        data = request.data
+        result = CareerPlatformsRepository.define(data=data)
+
+        return result
+    
+
+class CareerPlatformsAll(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def post(self, request):
+        data = request.data
+        result = CareerPlatformsRepository.all(data=data)
+
+        return result
+    
+
+class CareerPlatformsFetch(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def post(self, request):
+        data = request.data
+        if 'id' not in data:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        result = CareerPlatformsRepository.fetch(data=data, id=data['id'])
+        
+        return result
+    
+
+class CareerPlatformsDelete(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def post(self, request):
+        data = request.data
+        if 'id' not in data:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        result = CareerPlatformsRepository.delete(id=data['id'])
+
+        return result
+
+#endregion CareerPlatforms
     
 #region CareerQuestions
     
@@ -333,6 +412,11 @@ class TimeLogsDefine(APIView):
     permission_classes = (permissions.AllowAny,)
     def post(self, request):
         data = request.data
+        result = dict()
+        if not 'action' in data:
+            return Response('Timelogs action not found', status=status.HTTP_404_NOT_FOUND)
+
+
         schedule = ScheduleRepository.all(data={
             'filter': [
                 {
@@ -342,41 +426,55 @@ class TimeLogsDefine(APIView):
                 }
             ],
             'relations': ['schedule_details'],
-        }).data['schedule'][0]
+        })
 
-        if not schedule:
+        if status_error(schedule):
             return Response('Schedule not found', status=status.HTTP_404_NOT_FOUND)
+        
+        schedule = schedule.data['schedule'][0]
         
         if not schedule['schedule_details_data']:
             return Response('Schedule Details not found', status=status.HTTP_404_NOT_FOUND)
 
         details = schedule['schedule_details_data']
-        log_in = dict()
-        log_out = dict()
-
+        time_start = dict()
+        time_end = dict()
+        
+        format = '%H:%M:%S'
+        range = 0
         for item in details:
-            
+            time_start[range] = details[item]['time_start'] #formatDateTime(details[item]['time_start'], format)
+            time_end[range] = details[item]['time_end'] #formatDateTime(details[item]['time_end'], format)
+            range+=1
 
-        return Response(details)
+        # currenDate = dateTimeNow().replace()
 
+        # return Response([details, time_start, time_end])
 
-        timelogs = TimeLogsRepository.all(data={
-            'filter': [
-                {
-                    'target': 'entity_id',
-                    'operator': '=',
-                    'value': data['entity_id'],
-                },
-                {
-                    'target': ''
-                },
-            ]
-        }).data['time_logs']
+        timelogs = TimeLogsRepository.lastLogCheck(
+            data['entity_id']
+        )
+        now = datetime.now()
 
-        return Response(timelogs)
-        result = TimeLogsRepository.define(data=data)
+        if not status_error(timelogs):
+            timelogs = timelogs.data['time_logs']
 
-        return result
+            duration = now - timelogs['log_start'].replace(tzinfo=None)
+
+            # over write the previous log
+            result.update(TimeLogsRepository.define({
+                'id': timelogs['id'],
+                'duration': duration.total_seconds(),
+                'log_end': datetime.now(),
+            }).data)
+
+        if not 'end' in data['action']:
+            result.update(TimeLogsRepository.define({
+                'entity_id': data['entity_id'],
+                'log_start': now,
+            }).data)
+
+        return Response({'time_logs': result}, status=status.HTTP_200_OK)
     
 
 class TimeLogsAll(APIView):

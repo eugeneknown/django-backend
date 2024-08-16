@@ -34,7 +34,7 @@ def define(data):
 
 def all(data):
     filter = genericModelFilter(data)
-    result = EntityHasFiles.objects.filter(**filter['filter'][0]).exclude(Q(**filter['exclude'][0], _connector=Q.OR)).values()
+    result = EntityHasFiles.objects.filter(**filter['filter']).exclude(Q(**filter['exclude'], _connector=Q.OR)).values()
 
     return Response({meta_data: result}, status=status.HTTP_200_OK)
 

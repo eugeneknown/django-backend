@@ -41,7 +41,7 @@ def all(data):
     result = dict()
 
     filter = genericModelFilter(data)
-    object = Schedule.objects.filter(**filter['filter'][0]).exclude(Q(**filter['exclude'][0], _connector=Q.OR))
+    object = Schedule.objects.filter(**filter['filter']).exclude(Q(**filter['exclude'], _connector=Q.OR))
    
     range = 0
     for item in object:
@@ -59,6 +59,9 @@ def all(data):
 
         result[range] = value
         range+=1
+
+    if not result:
+        return Response({meta_data: result}, status=status.HTTP_404_NOT_FOUND)
 
     return Response({meta_data: result}, status=status.HTTP_200_OK)
 
