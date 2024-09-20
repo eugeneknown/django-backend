@@ -31,7 +31,7 @@ def define(data):
             model.tags = CareerTags.objects.get(id=int(data['tags_id']))
     
     now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
-    model.created_at = data['created_at'] if 'created_at' in data else now
+    if model.created_at is None: model.created_at = now
     model.updated_at = now
 
     model.save()

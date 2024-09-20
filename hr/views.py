@@ -154,8 +154,8 @@ class EntitySubmission(APIView):
         return Response({'entity_career': result}, status=status.HTTP_200_OK)
 
 
-    class EntityAddRandomBullshit(APIView):
-        permission_classes = (permissions.AllowAny,)
+class EntityAddRandomBullshit(APIView):
+    permission_classes = (permissions.AllowAny,)
     def post(self, request):
         data = request.data
 

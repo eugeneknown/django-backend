@@ -63,6 +63,7 @@ class CareerQuestions(models.Model):
     title = models.CharField(max_length=100)
     value = models.TextField()
     type = models.CharField(max_length=50)
+    required = models.BooleanField(default=False)
     status = models.CharField(max_length=50, default="active")
     created_by = models.SmallIntegerField(default=0)
     updated_by = models.SmallIntegerField(default=0)

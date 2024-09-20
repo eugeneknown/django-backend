@@ -21,6 +21,7 @@ def define(data):
     model.title = data['title']
     model.value = data['value'] if 'value' in data else ''
     model.type = data['type']
+    if 'required' in data: model.required = data['required']
     
     now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
     model.created_at = now

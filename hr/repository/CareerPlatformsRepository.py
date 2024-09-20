@@ -24,7 +24,7 @@ def define(data):
     model.color = data['color']
     
     now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
-    model.created_at = now
+    if model.created_at is None: model.created_at = now
     model.updated_at = now
 
     model.save()

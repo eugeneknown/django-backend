@@ -28,14 +28,15 @@ def define(data):
     model.experience = data['experience']
     model.descriptions = data['descriptions']
     model.qualifications = '0' #data['qualifications']
+    model.status = data['status'] if 'status' in data else 'active'
     
     now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
-    model.created_at = now
+    if model.created_at is None: model.created_at = now
     model.updated_at = now
 
     model.save()
 
-    return Response(status=status.HTTP_200_OK)
+    return Response({meta_data: model_to_dict(model)}, status=status.HTTP_200_OK)
 
 
 def all(data):
