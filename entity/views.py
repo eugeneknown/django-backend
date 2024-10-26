@@ -57,7 +57,7 @@ class EntityAll(APIView):
 
 class EntityFetch(APIView):
     permission_classes = (permissions.AllowAny,)
-    def get(self, request):
+    def post(self, request):
         data = request.data
         if 'id' not in data:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

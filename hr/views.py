@@ -110,6 +110,18 @@ class EntityHasCareersFetch(APIView):
         return result
     
 
+class EntityHasCareersDelete(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def post(self, request):
+        data = request.data
+        if 'id' not in data:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        result = EntityHasCareerRepository.delete(id=data['id'])
+
+        return result
+    
+
 class EntityHasCareersReport(APIView):
     permission_classes = (permissions.AllowAny,)
     def post(self, request):
@@ -130,7 +142,12 @@ class EntitySubmission(APIView):
                     'target': 'entity_id',
                     'operator': '=',
                     'value': data['entity']['id'] if 'entity_id' not in data else data['entity_id']
-                }
+                },
+                {
+                    'target': 'careers_id',
+                    'operator': '=',
+                    'value': data['career']['careers_id'] if 'careers_id' not in data else data['careers_id']
+                },
             ]
         }).data
         if len(entity['entity_career']): return Response('Already Submitted', status=status.HTTP_400_BAD_REQUEST)
@@ -368,6 +385,16 @@ class CareerHasQuestionsSort(APIView):
         data = request.data
 
         result = CareerHasQuestionsRepository.sort(data=data)
+        
+        return result
+    
+
+class CareerHasQuestionsMove(APIView):
+    permission_classes = (permissions.AllowAny,)
+    def post(self, request):
+        data = request.data
+
+        result = CareerHasQuestionsRepository.move(data=data)
         
         return result
 

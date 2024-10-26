@@ -76,7 +76,7 @@ def all(data):
     return Response({meta_data: result}, status=status.HTTP_200_OK)
 
 
-def fetch(data, id):
+def fetch(id):
     result = Files.objects.filter(id=id).values()
 
     return Response({meta_data: result}, status=status.HTTP_200_OK)

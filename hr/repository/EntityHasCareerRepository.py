@@ -13,6 +13,7 @@ from django.utils import timezone
 
 
 meta_data = 'entity_career'
+now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
 
 
 def define(data):
@@ -43,6 +44,7 @@ def all(data):
     result = dict()
 
     filter = genericModelFilter(data)
+    # return Response({meta_data: filter}, status=status.HTTP_200_OK)
     # print(filter)
     object = EntityHasCareer.objects.filter(**filter['filter']).exclude(Q(**filter['exclude'], _connector=Q.OR))
     if 'order' in data: object = object.order_by('-'+data['order']['target'] if data['order']['value'] == 'desc' else data['order']['target'])
@@ -52,7 +54,7 @@ def all(data):
         value =  model_to_dict(item)
         value['careers_data'] = model_to_dict(item.careers)
         value['entity_data'] = model_to_dict(item.entity)
-        value['platforms_data'] = model_to_dict(item.platforms)
+        if item.platforms is not None: value['platforms_data'] = model_to_dict(item.platforms)
         if item.tags is not None: value['tags_data'] = model_to_dict(item.tags)
         result[range] = value
         range+=1
@@ -77,7 +79,13 @@ def fetch(data, id):
 
 
 def delete(id):
-    print()
+    model = EntityHasCareer.objects.get(id=id)
+
+    model.deleted_at = now
+
+    model.save()
+
+    return Response({meta_data: model_to_dict(model)}, status=status.HTTP_200_OK)
 
 
 def report(data):

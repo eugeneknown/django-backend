@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     'entity.apps.EntityConfig',
     'hr.apps.HrConfig',
     'files.apps.FilesConfig',
+    'django_rest_passwordreset',
+    "anymail",
 ]
 
 MIDDLEWARE = [
@@ -208,6 +210,17 @@ GS_BUCKET_NAME = 'e20-app'
 MEDIA_ROOT = "media/"
 UPLOAD_ROOT = 'media/uploads/'
 MEDIA_URL = 'https://storage.googleapis.com/{}/'.format(GS_BUCKET_NAME)
+
+# email
+ANYMAIL = { 
+    "POSTMARK_SERVER_TOKEN": "1e59000a-da5e-419a-a6d9-222105d84218",
+}
+EMAIL_BACKEND = "anymail.backends.postmark.EmailBackend"  # or sendgrid.EmailBackend, or...
+DEFAULT_FROM_EMAIL = "systems@eighty20virtual.com"  # if you don't already have this in settings
+# SERVER_EMAIL = "your-server@example.com"  # ditto (default from-email for Django errors)
+
+#password reset token configuration
+DJANGO_REST_MULTITOKENAUTH_RESET_TOKEN_EXPIRY_TIME = 1 # time in hours about how long the token is active (Default: 24)
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

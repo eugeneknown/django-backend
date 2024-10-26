@@ -1,7 +1,9 @@
 # compiled output
 /static/*
+**/__pycache__
 
 # IDE - VSCode
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json

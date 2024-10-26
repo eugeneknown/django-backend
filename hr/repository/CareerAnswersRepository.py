@@ -1,10 +1,13 @@
-from hr.models import CareerAnswers, CareerHasQuestions, CareerQuestions
+from backend.globalFunctions import *
+from hr.models import CareerAnswers, CareerHasQuestions, CareerQuestions, Careers
 from entity.models import Entities
 from files.models import Files
 
 from files.repository import FilesRepository, EntityHasFilesRepository
 
 from django.forms.models import model_to_dict
+from django.db.models import Q, Count, Case, Value, When, IntegerField, F
+from django.db.models.functions import Trunc, Coalesce
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -34,6 +37,7 @@ def define(data):
 
 
         model.entity = Entities.objects.get(id=int(item['entity_id']))
+        model.careers = Careers.objects.get(id=int(item['careers_id']))
         model.question = CareerQuestions.objects.get(id=int(item['question_id']))
         model.value = item['value']
         
@@ -52,13 +56,15 @@ def define(data):
 def all(data):
     result = dict()
 
-    object = CareerAnswers.objects.filter(entity=data['entity_id'])
+    filter = genericModelFilter(data)
+    object = CareerAnswers.objects.filter(**filter['filter']).exclude(Q(**filter['exclude'], _connector=Q.OR))
     range = 0
     for item in object:
         value =  model_to_dict(item)
         value['question_data'] = model_to_dict(item.question)
         value['entity_data'] = model_to_dict(item.entity)
         if item.files is not None: 
+            value['files'] = FilesRepository.fetch(item.files_id).data['files'][0]
             value['files_url'] = FilesRepository.filesUrl(item.files_id).data['files']
         result[range] = value
         range+=1

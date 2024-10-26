@@ -5,7 +5,7 @@ class Files(models.Model):
     hash = models.CharField(max_length=50)
     group_permission = models.CharField(max_length=50, null=True)
     file_path = models.TextField()
-    file_type = models.CharField(max_length=50)
+    file_type = models.CharField(max_length=100)
     file_size = models.IntegerField()
     status = models.CharField(max_length=50, default="active")
     created_by = models.SmallIntegerField(default=0)

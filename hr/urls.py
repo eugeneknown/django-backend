@@ -16,6 +16,7 @@ urlpatterns = [
     path('careers/entity/define', views.EntityHasCareersDefine.as_view(), name='define'),
     path('careers/entity/all', views.EntityHasCareersAll.as_view(), name='all'),
     path('careers/entity/fetch', views.EntityHasCareersFetch.as_view(), name='fetch'),
+    path('careers/entity/delete', views.EntityHasCareersDelete.as_view(), name='delete'),
     path('careers/entity/report', views.EntityHasCareersReport.as_view(), name='report'),
     path('careers/entity/submit', views.EntitySubmission.as_view(), name='submit'),
 
@@ -55,6 +56,7 @@ urlpatterns = [
     path('careers/has/questions/fetch', views.CareerHasQuestionsFetch.as_view(), name='fetch'),
     path('careers/has/questions/delete', views.CareerHasQuestionsDelete.as_view(), name='delete'),
     path('careers/has/questions/sort', views.CareerHasQuestionsSort.as_view(), name='sort'),
+    path('careers/has/questions/move', views.CareerHasQuestionsMove.as_view(), name='move'),
 
     #endregion CareerHasQuestions
 
