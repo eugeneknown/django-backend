@@ -24,4 +24,25 @@ urlpatterns = [
     path('users/fetch', views.UsersFetch.as_view(), name='fetch'),
     #endregion Users
 
+    #region Experience
+	path('exprience/define', views.ExperienceDefine.as_view(), name='define'),
+    path('exprience/all', views.ExperienceAll.as_view(), name='all'),
+    path('exprience/fetch', views.ExperienceFetch.as_view(), name='fetch'),
+    path('exprience/delete', views.ExperienceFetch.as_view(), name='delete'),
+    #endregion Experience
+
+    #region EntityHasExperience
+	path('has/exeprience/define', views.EntityHasExperienceDefine.as_view(), name='define'),
+    path('has/exeprience/all', views.EntityHasExperienceAll.as_view(), name='all'),
+    path('has/exeprience/fetch', views.EntityHasExperienceFetch.as_view(), name='fetch'),
+    path('has/exeprience/delete', views.EntityHasExperienceFetch.as_view(), name='delete'),
+    #endregion EntityHasExperience
+
+    #region EntityDetails
+	path('details/define', views.EntityDetailsDefine.as_view(), name='define'),
+    path('details/all', views.EntityDetailsAll.as_view(), name='all'),
+    path('details/fetch', views.EntityDetailsFetch.as_view(), name='fetch'),
+    path('details/delete', views.EntityDetailsFetch.as_view(), name='delete'),
+    #endregion EntityDetails
+
 ]

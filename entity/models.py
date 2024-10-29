@@ -48,6 +48,8 @@ class Entities(models.Model):
     first_name = models.CharField(max_length=50, default="")
     last_name = models.CharField(max_length=50, default="")
     middle_name = models.CharField(max_length=50, default="")
+    nickname = models.CharField(max_length=50, default="")
+    children = models.SmallIntegerField(null=True)
     permanent_address = models.TextField(default="")
     present_address = models.TextField(default="")
     image = models.TextField(null=True)
@@ -55,43 +57,104 @@ class Entities(models.Model):
     email_verified = models.BooleanField(default=False)
     email_verified_at = models.DateTimeField(null=True)
     contact_number = models.CharField(max_length=50)
+    alternative_number = models.CharField(max_length=50, null=True)
     birthday = models.DateField(null=True)
+    birth_order = models.SmallIntegerField(null=True)
     birth_place = models.CharField(max_length=50, default="")
     civil_status = models.CharField(max_length=50, default="")
     age = models.SmallIntegerField(null=True)
     gender = models.CharField(max_length=50, default="")
+    education = models.CharField(max_length=50, default="")
+    course = models.CharField(max_length=50, default="")
     status = models.CharField(max_length=50, default='active')
     created_at = models.DateTimeField(null=True)
     updated_at = models.DateTimeField(null=True)
     deleted_at = models.DateTimeField(null=True)
 
 
-class Client(models.Model):
-   id = models.AutoField(primary_key=True)
-   entity = models.ForeignKey(
-       "Entities",
-       on_delete=models.CASCADE,
+class Experience(models.Model):
+    id = models.AutoField(primary_key=True)
+    last_company = models.CharField(max_length=50, default="")
+    position_held = models.CharField(max_length=50, default="")
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
+    handled = models.CharField(max_length=50, default="")
+    stay_length = models.CharField(max_length=50, default="")
+    leave_reason = models.CharField(max_length=50, default="")
+    created_at = models.DateTimeField(null=True)
+    updated_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(null=True)
+
+    def hasexperience(self):
+        hasexperience = EntityHasExperience.objects.get(experience=self)
+
+
+class EntityHasExperience(models.Model):
+    id = models.AutoField(primary_key=True)
+    entity = models.ForeignKey(
+        Entities,
+        on_delete=models.CASCADE,
     )
-   client_type = models.CharField(max_length=50, default="")
-   business_type = models.CharField(max_length=50, default="")
-   timezone = models.CharField(max_length=50, default="")
-   remarks = models.TextField(default="")
-   onboard_date = models.DateField(default="")
-   name = models.CharField(max_length=50, default="")
-   status = models.CharField(max_length=50, default="")
-   created_at = models.DateTimeField(null=True)
-   updated_at = models.DateTimeField(null=True)
-   deleted_at = models.DateTimeField(null=True)
+    experience = models.ForeignKey(
+        Experience,
+        on_delete=models.CASCADE,
+        related_name='hasexperience',
+    )
+    order = models.IntegerField(default=0)
+    created_at = models.DateTimeField(null=True)
+    updated_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(null=True)
+
+
+class EntityDetails(models.Model):
+    id = models.AutoField(primary_key=True)
+    entity = models.ForeignKey(
+        Entities,
+        on_delete=models.CASCADE,
+    )
+    platforms = models.ForeignKey(
+        to='hr.CareerPlatforms',
+        on_delete=models.CASCADE,
+    )
+    salary = models.CharField(max_length=50, default="")
+    us_time = models.CharField(max_length=50, default="")
+    work_in_office = models.CharField(max_length=50, default="")
+    transpo = models.CharField(max_length=50, default="")
+    application = models.CharField(max_length=50, default="")
+    start = models.CharField(max_length=50, default="")
+    condition = models.CharField(max_length=50, default="")
+    part_time = models.CharField(max_length=50, default="")
+    created_at = models.DateTimeField(null=True)
+    updated_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(null=True)
+
+
+class Client(models.Model):
+    id = models.AutoField(primary_key=True)
+    entity = models.ForeignKey(
+        Entities,
+        on_delete=models.CASCADE,
+    )
+    client_type = models.CharField(max_length=50, default="")
+    business_type = models.CharField(max_length=50, default="")
+    timezone = models.CharField(max_length=50, default="")
+    remarks = models.TextField(default="")
+    onboard_date = models.DateField(default="")
+    name = models.CharField(max_length=50, default="")
+    status = models.CharField(max_length=50, default="")
+    created_at = models.DateTimeField(null=True)
+    updated_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(null=True)
 
 
 class Employee(models.Model):
     id = models.AutoField(primary_key=True)
     client = models.ForeignKey(
-        "Client",
+        Client,
         on_delete = models.CASCADE,
     )
     entity = models.ForeignKey(
-        "Entities",
+        Entities,
         on_delete = models.CASCADE,
     )
     department = models.CharField(max_length=50, default="")
