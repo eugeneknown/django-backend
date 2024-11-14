@@ -1,7 +1,6 @@
 # compiled output
 /static/*
 **/__pycache__
-/venv
 
 # IDE - VSCode
 .vscode
@@ -10,3 +9,6 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# gcp keyfile
+keyfile.json
