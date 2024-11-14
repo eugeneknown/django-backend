@@ -1,10 +1,12 @@
 from backend.globalFunctions import *
 from entity.models import Experience 
+from entity.models import Entities
+from entity.models import ExperienceDetails
 
 from django.utils import timezone
 
 from django.forms.models import model_to_dict
-from django.db.models import Q, Count, Case, Value, When, IntegerField, F
+from django.db.models import Q, Count, Case, Value, When, IntegerField, F, Prefetch
 from django.db.models.functions import Trunc, Coalesce
 
 from rest_framework.response import Response
@@ -19,14 +21,11 @@ def define(data):
 
     if 'id' in data:
         model = Experience.objects.get(id=data['id'])
+    else:
+        model.entity = Entities.objects.get(id=data['entity_id'])
 
-    model.last_company = data['last_company']
-    model.position_held = data['position_held']
-    model.start_date = data['start_date']
-    model.end_date = data['end_date']
-    model.handled = data['handled']
-    model.stay_length = data['stay_length']
-    model.leave_reason = data['leave_reason']
+    model.total_experience = data['total_experience']
+    model.other_experience = data['other_experience']
 
     if model.created_at is None: model.created_at = now
     model.updated_at = now
@@ -43,7 +42,26 @@ def all(data):
     object = Experience.objects.filter(**filter['filter']).exclude(Q(**filter['exclude'], _connector=Q.OR))
     if 'order' in data: object = object.order_by('-'+data['order']['target'] if data['order']['value'] == 'desc' else data['order']['target'])
 
-    result = object.values()
+    if 'relations' in data:
+        if 'details' in data['relations']:
+            range = 0
+            object = object.prefetch_related('details')
+            for item in object:
+                value =  model_to_dict(item)
+
+                _range = 0
+                _value = dict()
+                for _item in item.details.all():
+                    _value[_range] = model_to_dict(_item)
+                    _range+=1
+
+
+                value['details'] = _value
+                result[range] = value
+                range+=1
+
+    else:
+        result = object.values()
 
     return Response({meta_data: result}, status=status.HTTP_200_OK)
 

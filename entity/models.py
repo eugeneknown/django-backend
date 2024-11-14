@@ -71,35 +71,46 @@ class Entities(models.Model):
     updated_at = models.DateTimeField(null=True)
     deleted_at = models.DateTimeField(null=True)
 
+    def details(self):
+        details = EntityDetails.objects.get(entity=self)
+
+    def reference(self):
+        reference = EntityReference.objects.get(entity=self)
+
 
 class Experience(models.Model):
     id = models.AutoField(primary_key=True)
-    last_company = models.CharField(max_length=50, default="")
+    entity = models.ForeignKey(
+        Entities,
+        on_delete=models.CASCADE,
+    )
+    total_experience = models.CharField(max_length=50, default="")
+    other_experience = models.CharField(max_length=50, default="")
+    created_at = models.DateTimeField(null=True)
+    updated_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(null=True)
+
+    def details(self):
+        details = ExperienceDetails.objects.get(experience=self)
+
+
+class ExperienceDetails(models.Model):
+    id = models.AutoField(primary_key=True)
+    experience = models.ForeignKey(
+        Experience,
+        on_delete=models.CASCADE,
+        related_name='details',
+    )
+    company = models.CharField(max_length=50, default="")
+    department = models.CharField(max_length=50, default="")
     position_held = models.CharField(max_length=50, default="")
     start_date = models.DateField(null=True)
     end_date = models.DateField(null=True)
     handled = models.CharField(max_length=50, default="")
     stay_length = models.CharField(max_length=50, default="")
     leave_reason = models.CharField(max_length=50, default="")
-    created_at = models.DateTimeField(null=True)
-    updated_at = models.DateTimeField(null=True)
-    deleted_at = models.DateTimeField(null=True)
-
-    def hasexperience(self):
-        hasexperience = EntityHasExperience.objects.get(experience=self)
-
-
-class EntityHasExperience(models.Model):
-    id = models.AutoField(primary_key=True)
-    entity = models.ForeignKey(
-        Entities,
-        on_delete=models.CASCADE,
-    )
-    experience = models.ForeignKey(
-        Experience,
-        on_delete=models.CASCADE,
-        related_name='hasexperience',
-    )
+    salary = models.CharField(max_length=50, default="")
+    present = models.BooleanField(default=False)
     order = models.IntegerField(default=0)
     created_at = models.DateTimeField(null=True)
     updated_at = models.DateTimeField(null=True)
@@ -111,10 +122,7 @@ class EntityDetails(models.Model):
     entity = models.ForeignKey(
         Entities,
         on_delete=models.CASCADE,
-    )
-    platforms = models.ForeignKey(
-        to='hr.CareerPlatforms',
-        on_delete=models.CASCADE,
+        related_name='details',
     )
     salary = models.CharField(max_length=50, default="")
     us_time = models.CharField(max_length=50, default="")
@@ -124,6 +132,24 @@ class EntityDetails(models.Model):
     start = models.CharField(max_length=50, default="")
     condition = models.CharField(max_length=50, default="")
     part_time = models.CharField(max_length=50, default="")
+    created_at = models.DateTimeField(null=True)
+    updated_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(null=True)
+
+
+class EntityReference(models.Model):
+    id = models.AutoField(primary_key=True)
+    entity = models.ForeignKey(
+        Entities,
+        on_delete=models.CASCADE,
+        related_name='reference',
+    )
+    name = models.CharField(max_length=50, default="")
+    position = models.CharField(max_length=50, default="")
+    email = models.EmailField(default="")
+    contact_number = models.CharField(max_length=50, default="")
+    company = models.CharField(max_length=50, default="")
+    company_email = models.EmailField(default="")
     created_at = models.DateTimeField(null=True)
     updated_at = models.DateTimeField(null=True)
     deleted_at = models.DateTimeField(null=True)

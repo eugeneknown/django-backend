@@ -1,6 +1,6 @@
 from backend.globalFunctions import *
-from entity.models import EntityDetails
 from entity.models import Entities
+from entity.models import EntityReference
 
 from django.utils import timezone
 
@@ -12,25 +12,23 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
-meta_data = 'entity_details'
+meta_data = 'entity_reference'
 now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
 
 def define(data):
-    model = EntityDetails()
+    model = EntityReference()
 
     if 'id' in data:
-        model = EntityDetails.objects.get(id=data['id'])
+        model = EntityReference.objects.get(id=data['id'])
     else:
         model.entity = Entities.objects.get(id=data['entity_id'])
 
-    model.salary = data['salary']
-    model.us_time = data['us_time']
-    model.work_in_office = data['work_in_office']
-    model.transpo = data['transpo']
-    model.application = data['application']
-    model.start = data['start']
-    model.condition = data['condition']
-    model.part_time = data['part_time']
+    model.name = data['name']
+    model.position = data['position']
+    model.email = data['email']
+    model.contact_number = data['contact_number']
+    model.company = data['company']
+    model.company_email = data['company_email']
 
     if model.created_at is None: model.created_at = now
     model.updated_at = now
@@ -44,34 +42,22 @@ def all(data):
     result = dict()
 
     filter = genericModelFilter(data)
-    object = EntityDetails.objects.filter(**filter['filter']).exclude(Q(**filter['exclude'], _connector=Q.OR))
+    object = EntityReference.objects.filter(**filter['filter']).exclude(Q(**filter['exclude'], _connector=Q.OR))
     if 'order' in data: object = object.order_by('-'+data['order']['target'] if data['order']['value'] == 'desc' else data['order']['target'])
 
-    if 'relations' in data:
-        range = 0
-        for item in object:
-            value =  model_to_dict(item)
-            if 'entity' in data['relations']:
-                if item.entity is not None: value['entity_data'] = model_to_dict(item.entity)
-
-            result[range] = value
-            range+=1
-
-    else:
-        result = object.values() 
-
+    result = object.values()
 
     return Response({meta_data: result}, status=status.HTTP_200_OK)
 
 
 def fetch(data, id):
-    result = EntityDetails.objects.filter(id=id).values()
+    result = EntityReference.objects.filter(id=id).values()
 
     return Response({meta_data: result}, status=status.HTTP_200_OK)
 
 
 def delete(id):
-    model = EntityDetails.objects.get(id=id)
+    model = EntityReference.objects.get(id=id)
 
     model.deleted_at = now
 

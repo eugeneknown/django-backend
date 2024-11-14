@@ -25,24 +25,33 @@ urlpatterns = [
     #endregion Users
 
     #region Experience
-	path('exprience/define', views.ExperienceDefine.as_view(), name='define'),
-    path('exprience/all', views.ExperienceAll.as_view(), name='all'),
-    path('exprience/fetch', views.ExperienceFetch.as_view(), name='fetch'),
-    path('exprience/delete', views.ExperienceFetch.as_view(), name='delete'),
+	path('experience/define', views.ExperienceDefine.as_view(), name='define'),
+    path('experience/all', views.ExperienceAll.as_view(), name='all'),
+    path('experience/fetch', views.ExperienceFetch.as_view(), name='fetch'),
+    path('experience/delete', views.ExperienceDelete.as_view(), name='delete'),
+    path('experience/submit', views.ExperienceSubmit.as_view(), name='submit'),
     #endregion Experience
 
-    #region EntityHasExperience
-	path('has/exeprience/define', views.EntityHasExperienceDefine.as_view(), name='define'),
-    path('has/exeprience/all', views.EntityHasExperienceAll.as_view(), name='all'),
-    path('has/exeprience/fetch', views.EntityHasExperienceFetch.as_view(), name='fetch'),
-    path('has/exeprience/delete', views.EntityHasExperienceFetch.as_view(), name='delete'),
-    #endregion EntityHasExperience
+    #region ExperienceDetails
+	path('experience/details/define', views.ExperienceDetailsDefine.as_view(), name='define'),
+    path('experience/details/all', views.ExperienceDetailsAll.as_view(), name='all'),
+    path('experience/details/fetch', views.ExperienceDetailsFetch.as_view(), name='fetch'),
+    path('experience/details/delete', views.ExperienceDetailsDelete.as_view(), name='delete'),
+    #endregion ExperienceDetails
 
     #region EntityDetails
 	path('details/define', views.EntityDetailsDefine.as_view(), name='define'),
     path('details/all', views.EntityDetailsAll.as_view(), name='all'),
     path('details/fetch', views.EntityDetailsFetch.as_view(), name='fetch'),
-    path('details/delete', views.EntityDetailsFetch.as_view(), name='delete'),
+    path('details/delete', views.EntityDetailsDelete.as_view(), name='delete'),
     #endregion EntityDetails
+
+    #region EntityReference
+	path('reference/define', views.EntityReferenceDefine.as_view(), name='define'),
+    path('reference/all', views.EntityReferenceAll.as_view(), name='all'),
+    path('reference/fetch', views.EntityReferenceFetch.as_view(), name='fetch'),
+    path('reference/delete', views.EntityReferenceDelete.as_view(), name='delete'),
+    path('reference/submit', views.EntityReferenceSubmit.as_view(), name='submit'),
+    #endregion EntityReference
 
 ]

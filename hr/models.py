@@ -7,7 +7,7 @@ from files.models import Files
 class Careers(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=50)
-    type = models.CharField(max_length=50)
+    type = models.TextField()
     salary = models.CharField(max_length=50)
     benifits = models.TextField()
     pay_types = models.TextField()
@@ -60,7 +60,7 @@ class EntityHasCareer(models.Model):
 
 class CareerQuestions(models.Model):
     id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=100)
+    title = models.TextField()
     value = models.TextField()
     type = models.CharField(max_length=50)
     required = models.BooleanField(default=False)
@@ -96,6 +96,7 @@ class CareerAnswers(models.Model):
     question = models.ForeignKey(CareerQuestions, on_delete=models.CASCADE)
     entity = models.ForeignKey(Entities, on_delete=models.CASCADE)
     careers = models.ForeignKey(Careers, on_delete=models.CASCADE, null=True) #remove this null when in prod
+    # entitycareer = models.ForeignKey(EntityHasCareer, on_delete=models.CASCADE, null=True) #remove this null when in prod
     files = models.ForeignKey(Files, on_delete=models.CASCADE, null=True)
     value = models.TextField()
     status = models.CharField(max_length=50, default="active")

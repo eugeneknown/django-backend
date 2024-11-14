@@ -1,8 +1,10 @@
+from backend.globalFunctions import *
 from entity.models import Entities 
 
 from django.utils import timezone
 
 from django.forms.models import model_to_dict
+from django.db.models import Q, Count, Case, Value, When, IntegerField, F, Prefetch
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -35,6 +37,13 @@ def define(data):
     model.civil_status = data['civil_status']
     model.age = data['age']
     model.gender = data['gender']
+    model.nickname = data['nickname']
+    model.children = data['children']
+    model.alternative_number = data['alternative_number']
+    model.birth_order = data['birth_order']
+    model.education = data['education']
+    model.course = data['course']
+    model.gender = data['gender']
 
     now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
     model.created_at = now
@@ -46,11 +55,34 @@ def define(data):
 
 
 def all(data):
-    # like laravel query for faster process in frontend
+    result = dict()
 
-    result = Entities.objects.values()
+    filter = genericModelFilter(data)
+    object = Entities.objects.filter(**filter['filter']).exclude(Q(**filter['exclude'], _connector=Q.OR))
+    if 'order' in data: object = object.order_by('-'+data['order']['target'] if data['order']['value'] == 'desc' else data['order']['target'])
 
-    return Response({'entity':result}, status=status.HTTP_200_OK)
+    if 'relations' in data:
+        if 'details' in data['relations']:
+            range = 0
+            object = object.prefetch_related('details')
+            for item in object:
+                value =  model_to_dict(item)
+
+                _range = 0
+                _value = dict()
+                for _item in item.details.all():
+                    _value[_range] = model_to_dict(_item)
+                    _range+=1
+
+
+                value['details'] = _value
+                result[range] = value
+                range+=1
+
+    else:
+        result = object.values()
+
+    return Response({meta_data: result}, status=status.HTTP_200_OK)
 
 
 def fetch(data, id):
