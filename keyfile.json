@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "prime-well-326118",
+  "private_key_id": "1951349b7791fe4b717a5db4286656c6612efaf9",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCNFT7E07dd/apB\nM48W9DjGfQeoHGesYtUa9TcgI8YeEUHv28Vdi/MYKg32WTgyxcHc3+iHuk5CWopg\nHq0ZBMcjHRY83U6aYT12Drhw41vUgoSTq7I4eX071171AWwR/WTJBID5oLoHpt4k\nd+YPAKyGLOJnyIg8CTuKaa1288dd4q1MJXGd9VAVtkDg7rpEsCxb3B651jGpojHO\nl/I2FcCGjHHC2c1/JVDmPAhD79DzMAJ4XhAWbyY3NO/IbrojA7uVcAm02yHVQ3rr\nrppc3BQWXlgKmxayqIE8QY+xXDNe4S+feArsxvBzrMNtRe8C1h8IRPoJygYfUN/Q\nOX0nPwiFAgMBAAECggEAEyr3xDYfi52TLBidMDkuHYmPKL/zNfCXk3oNa0hw+lTN\n6JCrV/JTrMzJ6NZmVD+Z/zBMn2QojctPUY/ZZLTJeXPSOaK3szHS799AH9ZD+7Nf\n39BL/nBDG4Y/WHpA/JC4yLbb7w5vN+rr83h2wUMOLYyblg4gtEds13lUH/0u8QpP\nbPpKCTwtEp9z8FrYHLZ8+IBxjEctWAHSJYCDseyOUOaiBgFmTnlXckJFzxRqMp1A\nFK5vqqkirSgenJzvcO3pZwlVQOtSjz/bJwUkzRC9NUcfWyTrc96kCIaSP55JDsFb\nISLrVEflihMZAdQlfDouwrli03iMgTn13pNQ6dF6YQKBgQC/C9FGE9M0uArqYLH5\nAlWWg8ndCF/ByE9jA1Qv080uyX0kFuh2DrdtrUnmwbBGdkOCrL4VUoJL5bTy1RQ2\njwOGGB7t7wewaDpjaXnvDjDrhthioTTXNCLSmN1FCZCu5mqZn6GPRNRoZPruHueB\nR1PF07Kltib1FRNxnMZleeYi9wKBgQC9DMHpp9sVMK/6u51YY0kOZdTJCGKcELq1\nvhPiDhfM7IeDlyS9VjflMGLVVkCnfz1ih1raEpCyHarkNB03C+le+pfT8fiawOta\nA3ZXhUBecJPbICI0qT5h1tbBn0TxWZKXxI02N2FX7cj5vGUeXl12C6AzS7g6Y/zS\n7fPphxjVYwKBgBrvd5oBwY11RVS2PWF2Ssrl2dgoDhgsPcUf+wajPhKSpeoosK20\ndXgpLnoyZMAKfIo4ALTQ5T3+LPzvveHTWBPX4sR5JwRgLZtGi8KApbUPVgLR57lP\nyHkYxFmvd46xPeZa81RXx/rQAfEAunMns0/5AP8MJ4H2br9d8zrrbN8RAoGAUn3f\nm4pgIbX2BC2bsfbY6QxsNjCPftQZ9LX1TR2jKwtG8pegM3IMv9hGOBsD6VKvQXAY\np7GUK/SgHiXTXbK36Xbli1k5hqWJzORX3kbJ2Ku9CM/TvTDghKbPXPuXhMz2F31v\ntOmjc0/R849OfFrm41ydUeTHhcsdhhjI5uzJXEsCgYAo64YDTm52HL0MLdyGOzbM\nxI3Da1Y1ExYm1bMSSUPkCEEkWLhM5cb6KxaOQfKeGg3kan2ZRY4Oe+h1bMFmCoU/\nO9uUKnm2gVFiJ1rNKk25tW4GNO4S4ZO5tkO5nNylojdDVQL8KMsRYc4rDjHMaX8m\nZEV46o5FFlQWiIjMjSxG9w==\n-----END PRIVATE KEY-----\n",
+  "client_email": "e20service@prime-well-326118.iam.gserviceaccount.com",
+  "client_id": "100504445178744964672",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/e20service%40prime-well-326118.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
