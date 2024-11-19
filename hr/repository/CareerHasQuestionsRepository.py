@@ -27,7 +27,6 @@ def define(data):
     model.order = data['order']
     model.section = data['section']
     
-    now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
     if model.created_at is None: model.created_at = now
     model.updated_at = now
 

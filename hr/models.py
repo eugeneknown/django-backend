@@ -96,7 +96,7 @@ class CareerAnswers(models.Model):
     question = models.ForeignKey(CareerQuestions, on_delete=models.CASCADE)
     entity = models.ForeignKey(Entities, on_delete=models.CASCADE)
     careers = models.ForeignKey(Careers, on_delete=models.CASCADE, null=True) #remove this null when in prod
-    # entitycareer = models.ForeignKey(EntityHasCareer, on_delete=models.CASCADE, null=True) #remove this null when in prod
+    entitycareer = models.ForeignKey(EntityHasCareer, on_delete=models.CASCADE, null=True) #remove this null when in prod
     files = models.ForeignKey(Files, on_delete=models.CASCADE, null=True)
     value = models.TextField()
     status = models.CharField(max_length=50, default="active")

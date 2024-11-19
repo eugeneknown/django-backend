@@ -385,6 +385,6 @@ class EntityReferenceSubmit(APIView):
             result[count] = EntityReferenceRepository.define(data=temp).data['entity_reference']
             count+=1
 
-        return Response({'experience': result}, status=status.HTTP_200_OK)
+        return Response({'reference': result}, status=status.HTTP_200_OK)
 
 #endregion EntityReference

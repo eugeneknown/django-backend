@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework.decorators import permission_classes
+from django.forms.models import model_to_dict
 
 from hr.repository import CareersRepository
 from hr.repository import EntityHasCareerRepository
@@ -164,9 +165,18 @@ class EntitySubmission(APIView):
 
         else:
             result = dict()
-            result['answers'] = CareerAnswersRepository.define(data=data['answers']).data
-            result['entity'] = EntityRepository.define(data['entity']).data
-            result['career'] = EntityHasCareerRepository.define(data=data['career']).data
+            career = EntityHasCareerRepository.define(data=data['career']).data
+            result['career'] = career['entity_career']
+
+            _result = dict()
+            count = 0
+            for item in data['answers']:
+                data['answers'][item]['entity_career_id'] = career['id']
+                _result[count] = model_to_dict(CareerAnswersRepository.define(data=data['answers'][item]).data['career_answers'])
+                count+=1
+
+            result['answers'] = _result
+            result['entity'] = EntityRepository.define(data['entity']).data['entity']
             
         return Response({'entity_career': result}, status=status.HTTP_200_OK)
 

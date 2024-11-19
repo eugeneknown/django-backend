@@ -1,9 +1,9 @@
 from backend.globalFunctions import *
-from hr.models import CareerAnswers, CareerHasQuestions, CareerQuestions, Careers
+from hr.models import CareerAnswers, CareerQuestions, Careers, EntityHasCareer
 from entity.models import Entities
 from files.models import Files
 
-from files.repository import FilesRepository, EntityHasFilesRepository
+from files.repository import FilesRepository
 
 from django.forms.models import model_to_dict
 from django.db.models import Q, Count, Case, Value, When, IntegerField, F
@@ -16,41 +16,31 @@ from django.utils import timezone
 
 
 meta_data = 'career_answers'
+now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
 
 
 def define(data):
-    result = dict()
-    count = 0
+    model = CareerAnswers()
 
-    for key in data:
-        model = CareerAnswers()
-        item = data[key]
-
-        if 'id' in item:
-            model = model.objects.get(id=data['id'])
-
-        if 'type' in item:
-            model.files = Files.objects.get(id=int(item['files_id']))
-
-        else:
-            model.files = None
-
-
-        model.entity = Entities.objects.get(id=int(item['entity_id']))
-        model.careers = Careers.objects.get(id=int(item['careers_id']))
-        model.question = CareerQuestions.objects.get(id=int(item['question_id']))
-        model.value = item['value']
+    if 'id' in data:
+        model = model.objects.get(id=data['id'])
         
-        now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
-        model.created_at = now
-        model.updated_at = now
+    else:
+        model.files = Files.objects.get(id=int(data['files_id'])) if 'type' in data else None
 
-        model.save()
 
-        result[count] = model_to_dict(model)
-        count+=1
+    model.entity = Entities.objects.get(id=int(data['entity_id']))
+    model.careers = Careers.objects.get(id=int(data['careers_id']))
+    model.question = CareerQuestions.objects.get(id=int(data['question_id']))
+    model.entitycareer = EntityHasCareer.objects.get(id=int(data['entity_career_id']))
+    model.value = data['value']
+    
+    if model.created_at is None: model.created_at = now
+    model.updated_at = now
 
-    return Response({meta_data: result}, status=status.HTTP_200_OK)
+    model.save()
+
+    return Response({meta_data: model}, status=status.HTTP_200_OK)
 
 
 def all(data):
@@ -61,8 +51,13 @@ def all(data):
     range = 0
     for item in object:
         value =  model_to_dict(item)
-        value['question_data'] = model_to_dict(item.question)
-        value['entity_data'] = model_to_dict(item.entity)
+        if 'relations' in data:
+            if 'question' in data['relations']:
+                value['question_data'] = model_to_dict(item.question)
+
+            if 'entity' in data['relations']:
+                value['entity_data'] = model_to_dict(item.entity)
+
         if item.files is not None: 
             value['files'] = FilesRepository.fetch(item.files_id).data['files'][0]
             value['files_url'] = FilesRepository.filesUrl(item.files_id).data['files']

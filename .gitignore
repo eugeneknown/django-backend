@@ -1,6 +1,9 @@
 # compiled output
 /static/*
 **/__pycache__
+/venv
+.env
+/staticfiles/*
 
 # IDE - VSCode
 .vscode
