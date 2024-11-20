@@ -165,8 +165,8 @@ class EntitySubmission(APIView):
 
         else:
             result = dict()
-            career = EntityHasCareerRepository.define(data=data['career']).data
-            result['career'] = career['entity_career']
+            career = EntityHasCareerRepository.define(data=data['career']).data['entity_career']
+            result['career'] = career
 
             _result = dict()
             count = 0
