@@ -49,7 +49,7 @@ class Entities(models.Model):
     last_name = models.CharField(max_length=50, default="")
     middle_name = models.CharField(max_length=50, default="")
     nickname = models.CharField(max_length=50, default="")
-    children = models.SmallIntegerField(null=True)
+    children = models.CharField(max_length=50, null=True)
     permanent_address = models.TextField(default="")
     present_address = models.TextField(default="")
     image = models.TextField(null=True)
