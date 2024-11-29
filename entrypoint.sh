@@ -12,7 +12,7 @@ set -e
 start_gunicorn() {
     # Start Gunicorn
     echo "Starting Gunicorn..."
-    gunicorn --config gunicorn-cfg.py --reload --reload-engine=poll backend.asgi:application -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 
+    gunicorn --config gunicorn-cfg.py --reload --reload-engine=poll backend.wsgi:application --bind 0.0.0.0:8000 
 }
 
 # Start Gunicorn

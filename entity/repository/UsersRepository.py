@@ -1,4 +1,4 @@
-from entity.models import Users, Entities
+from entity.models import Users, Entities, Experience, EntityDetails
 
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import Permission
@@ -106,6 +106,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         entity = Entities()
         entity.users = users
         entity.save()
+
+        experience = Experience()
+        experience.entity = entity
+        experience.save()
+
+        details = EntityDetails()
+        details.entity = entity
+        details.save()
 
         return users
     

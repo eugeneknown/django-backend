@@ -53,7 +53,7 @@ class EntityDefine(APIView):
 
 class EntityAll(APIView):
     permission_classes = (permissions.AllowAny,)
-    def get(self, request):
+    def post(self, request):
         data = request.data
         result = EntityRepository.all(data=data)
 
@@ -86,7 +86,7 @@ class UsersDefine(APIView):
 
 class UsersAll(APIView):
     permission_classes = (permissions.AllowAny,)
-    def get(self, request):
+    def post(self, request):
         data = request.data
         result = UsersRepository.all(data=data)
 
@@ -244,7 +244,7 @@ class ExperienceDetailsDefine(APIView):
 
 class ExperienceDetailsAll(APIView):
     permission_classes = (permissions.AllowAny,)
-    def get(self, request):
+    def post(self, request):
         data = request.data
         result = ExperienceDetailsRepository.all(data=data)
 

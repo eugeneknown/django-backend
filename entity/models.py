@@ -111,7 +111,7 @@ class ExperienceDetails(models.Model):
     leave_reason = models.CharField(max_length=50, default="")
     salary = models.CharField(max_length=50, default="")
     present = models.BooleanField(default=False)
-    order = models.IntegerField(default=0)
+    description = models.TextField(default="")
     created_at = models.DateTimeField(null=True)
     updated_at = models.DateTimeField(null=True)
     deleted_at = models.DateTimeField(null=True)

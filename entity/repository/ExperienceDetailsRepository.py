@@ -33,7 +33,7 @@ def define(data):
     model.leave_reason = data['leave_reason']
     model.salary = data['salary']
     if 'present' in data: model.present = data['present']
-    model.order = data['order']
+    model.description = data['description']
 
     if model.created_at is None: model.created_at = now
     model.updated_at = now
