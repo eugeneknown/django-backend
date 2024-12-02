@@ -27,13 +27,13 @@ def define(data):
     model.department = data['department']
     model.position_held = data['position_held']
     model.start_date = data['start_date']
-    model.end_date = data['end_date']
     model.handled = data['handled']
     model.stay_length = data['stay_length']
     model.leave_reason = data['leave_reason']
     model.salary = data['salary']
     if 'present' in data: model.present = data['present']
-    model.description = data['description']
+    if 'description' in data: model.description = data['description']
+    if 'end_date' in data: model.end_date = data['end_date']
 
     if model.created_at is None: model.created_at = now
     model.updated_at = now

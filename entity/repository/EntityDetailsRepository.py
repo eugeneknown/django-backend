@@ -31,6 +31,7 @@ def define(data):
     model.start = data['start']
     model.condition = data['condition']
     model.part_time = data['part_time']
+    model.travel = data['travel']
 
     if model.created_at is None: model.created_at = now
     model.updated_at = now

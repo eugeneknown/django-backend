@@ -44,6 +44,7 @@ def define(data):
     model.education = data['education']
     model.course = data['course']
     model.gender = data['gender']
+    model.religion = data['religion']
 
     now = timezone.now() #.strftime("%d-%m-%Y %H:%M:%S")
     model.created_at = now
