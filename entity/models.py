@@ -7,6 +7,8 @@ from django.urls import reverse
 from django_rest_passwordreset.signals import reset_password_token_created
 from django.core.mail import send_mail, EmailMessage
 
+from hr.models import CareerPlatforms
+
 
 class Users(AbstractUser):
     username = models.CharField(max_length=50, unique=True)
@@ -124,6 +126,11 @@ class EntityDetails(models.Model):
         Entities,
         on_delete=models.CASCADE,
         related_name='details',
+    )
+    platforms = models.ForeignKey(
+        CareerPlatforms,
+        on_delete=models.CASCADE,
+        null=True,
     )
     salary = models.CharField(max_length=50, default="")
     us_time = models.CharField(max_length=50, default="")
