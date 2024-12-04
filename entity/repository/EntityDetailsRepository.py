@@ -1,6 +1,7 @@
 from backend.globalFunctions import *
 from entity.models import EntityDetails
 from entity.models import Entities
+from hr.models import CareerPlatforms
 
 from django.utils import timezone
 
@@ -32,6 +33,7 @@ def define(data):
     model.condition = data['condition']
     model.part_time = data['part_time']
     model.travel = data['travel']
+    if 'platforms_id' in data: model.platforms = CareerPlatforms.objects.get(id=data['platforms_id'])
 
     if model.created_at is None: model.created_at = now
     model.updated_at = now
