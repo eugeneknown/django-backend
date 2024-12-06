@@ -23,11 +23,10 @@ def define(data):
     model = CareerAnswers()
 
     if 'id' in data:
-        model = model.objects.get(id=data['id'])
+        model = CareerAnswers.objects.get(id=data['id'])
         
     else:
-        model.files = Files.objects.get(id=int(data['files_id'])) if 'type' in data else None
-
+        if 'files_id' in data: model.files = Files.objects.get(id=data['files_id'])
 
     model.entity = Entities.objects.get(id=int(data['entity_id']))
     model.careers = Careers.objects.get(id=int(data['careers_id']))

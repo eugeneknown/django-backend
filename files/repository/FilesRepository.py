@@ -36,7 +36,7 @@ def filesUpload(data):
     result['group_permission'] = data['group']
     result['file_path'] = path
     result['file_size'] = data['file'].size
-    result['file_type'] = data['type'] if data['type'] else ''
+    result['file_type'] = data['file'].content_type
 
     return Response({meta_data: result}, status=status.HTTP_200_OK)
 

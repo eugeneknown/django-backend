@@ -19,6 +19,7 @@ urlpatterns = [
     path('careers/entity/delete', views.EntityHasCareersDelete.as_view(), name='delete'),
     path('careers/entity/report', views.EntityHasCareersReport.as_view(), name='report'),
     path('careers/entity/submit', views.EntitySubmission.as_view(), name='submit'),
+    path('careers/entity/submitv2', views.EntitySubmissionv2.as_view(), name='submit'),
 
     #endregion EntityHasCareer
 
