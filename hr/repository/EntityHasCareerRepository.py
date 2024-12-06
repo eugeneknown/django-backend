@@ -54,6 +54,7 @@ def all(data):
         value =  model_to_dict(item)
         value['careers_data'] = model_to_dict(item.careers)
         value['entity_data'] = model_to_dict(item.entity)
+        value['entity_data']['details'] = item.entity.details.values()
         if item.platforms is not None: value['platforms_data'] = model_to_dict(item.platforms)
         if item.tags is not None: value['tags_data'] = model_to_dict(item.tags)
         result[range] = value
